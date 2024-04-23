@@ -60,8 +60,12 @@ public class CategoryManagerServiceBean {
      * @return la liste de catégories n'ayant pas de parents.
      */
     public List<Category> getRootCategories() {
+        String jpql = "Select c from Category c where c.parentCategory is null ";
 
-        return null;
+            Query query = em.createQuery(jpql);
+            List result = query.getResultList();
+
+        return result;
     }
 
    /**
@@ -72,7 +76,16 @@ public class CategoryManagerServiceBean {
     * retourne null si aucune catégorie enfant n'est  retrouvée en fonction de parentId
     */
     public List<Category> getchildrenCategories(Long parentId) {
-       return null;
+        String jpql = "Select c from Category c where c.parentCategory is not null AND c.parentCategory = :category ";
+
+        Category cat = em.find(Category.class,parentId);
+
+
+        Query query = em.createQuery(jpql);
+        query.setParameter("category", cat);
+
+        List result = query.getResultList();
+        return result;
     }
 
 }

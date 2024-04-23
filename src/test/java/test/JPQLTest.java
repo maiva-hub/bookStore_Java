@@ -61,9 +61,9 @@ public class JPQLTest {
     
     @Test
     public void checkRequestWithStringParameter(){
-        String jpql = "VOTRE REQUETE PARAMETREE"; //remplacez par votre requête 
-        String param="VALEUR DU PARAMETRE"; //remplacez par la valeur de type %votreChaine% (votre motif de recherche encadré par %)
-        String paramName = "VOTRE PARAMETRE";//remplacez par le nom du paramètre tel qu'il est défini dans votre requête JPQL
+        String jpql = "Select b from Book b where b.title like :pattern"; //remplacez par votre requête
+        String param="%C#%"; //remplacez par la valeur de type %votreChaine% (votre motif de recherche encadré par %)
+        String paramName = "pattern";//remplacez par le nom du paramètre tel qu'il est défini dans votre requête JPQL
         
         try{
         Query query = em.createQuery(jpql);
