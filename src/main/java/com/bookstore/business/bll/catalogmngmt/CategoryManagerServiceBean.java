@@ -37,7 +37,10 @@ public class CategoryManagerServiceBean {
      * @return identité de la catégorie persistée
      */
     public Long saveCategory(Category category) {
-     return null;
+        em.persist(category);
+        em.flush();
+        em.refresh(category);
+        return category.getId();
     }
    
     /**
@@ -48,7 +51,7 @@ public class CategoryManagerServiceBean {
      */
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)//comportement transactionnel redéfini
     public Category findCategoryById(Long categoryId){
-        return null;
+        return em.find(Category.class,categoryId);
     }
 
     /**
@@ -57,6 +60,7 @@ public class CategoryManagerServiceBean {
      * @return la liste de catégories n'ayant pas de parents.
      */
     public List<Category> getRootCategories() {
+
         return null;
     }
 

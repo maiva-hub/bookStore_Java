@@ -48,7 +48,7 @@ public class JPQLTest {
 
     @Test
     public void checkSimpleRequest(){
-        String jpql = "VOTRE REQUETE";
+        String jpql = "Select c from Category c where c.parentCategory is null ";
         try{
         Query query = em.createQuery(jpql);
         List result = query.getResultList();
@@ -78,12 +78,12 @@ public class JPQLTest {
     @Test
     public void checkRequestWithCategoryParameter(){
         
-        String jpql = "VOTRE REQUETE PARAMETREE";//remplacez par votre requête
+        String jpql = "Select c from Category c where c.parentCategory is not null AND c.parentCategory = :parentID ";//remplacez par votre requête
         try{       
             Long catId = 56L; //"ID DE LA CATEGORIE" - remplacez par un id valide
             Category cat = em.find(Category.class,catId);
         
-            String paramName = "NOM DU PARAMETRE"; //remplacez par le nom du paramètre tel qu'il est défini dans votre requête JPQL
+            String paramName = "parentID"; //remplacez par le nom du paramètre tel qu'il est défini dans votre requête JPQL
 
             Query query = em.createQuery(jpql);
             query.setParameter(paramName, cat);
@@ -96,5 +96,6 @@ public class JPQLTest {
             throw new AssertionError("requête ["+jpql+"] est mal formée");
         }
     }
-    
+
+
 }

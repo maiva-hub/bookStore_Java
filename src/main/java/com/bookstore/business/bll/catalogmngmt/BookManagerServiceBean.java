@@ -9,6 +9,10 @@ import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,7 +46,8 @@ public class BookManagerServiceBean implements Serializable {
     * @return le livre persisté
     */
     public Book saveBook(Book book){
-       return null;
+        em.persist(book);
+        return book;
     }
 
 /**
@@ -60,7 +65,8 @@ public class BookManagerServiceBean implements Serializable {
  * @param book le livre a supprimé. Si book est null, l'opération de suppression n'est pas exécutée
  */
     public void deleteBook(Book book) { 
-      
+      em.remove(book);
+      em.flush();
     }
 
     /**
@@ -72,7 +78,12 @@ public class BookManagerServiceBean implements Serializable {
      */ 
     @TransactionAttribute(TransactionAttributeType.SUPPORTS) //méthode pouvant joindre le contexte transactionnel de l'appelant
     public List<Book> findByCriteria(String pattern) {
-        return null;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Book> cq = cb.createQuery(Book.class);
+        Root<Book> root = cq.from(Book.class);
+        Predicate predicate = cb.like(root.get("title"),pattern);
+        cq.where(predicate);
+        return em.createQuery(cq).getResultList();
      
     }
 
